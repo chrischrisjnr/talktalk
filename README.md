@@ -13,7 +13,8 @@ No ads. No tracking. No accounts with anyone but you. Run it on your own compute
 - **Custom emoji** — draw a 16×16 pixel emoji in the built-in studio, or upload any PNG / GIF / JPG / WEBP (animated GIFs work). Use them in messages as `:name:`
 - **File sharing** — attach, paste or drag & drop any file (up to 25 MB by default). Images show inline
 - **Real-time** — messages, reactions, typing indicators and online status update live
-- Light & dark mode, works on phones
+- **Themes** — Auto, Light or Dark, plus four pastel accent colours (Lavender, Sky, Mint, Rose). Pick them from the palette button in the top bar
+- Works on phones
 
 ## Run it (5 minutes)
 

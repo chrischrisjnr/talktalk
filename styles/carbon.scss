@@ -41,14 +41,13 @@
 @use '@carbon/styles/scss/components/progress-bar';
 @use '@carbon/styles/scss/components/link';
 
-// Light: Gray 10 · Dark: Gray 100 (follows the device setting).
-// style.css softens both with pastel accents.
+// Light: Gray 10 · Dark: Gray 100. The theme selector sets data-theme on
+// <html> (resolving "Auto" from the device setting), and style.css softens both
+// with pastel accents.
 :root {
   @include theme.theme(themes.$g10);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    @include theme.theme(themes.$g100);
-  }
+:root[data-theme='dark'] {
+  @include theme.theme(themes.$g100);
 }

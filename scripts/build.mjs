@@ -29,6 +29,7 @@ const ICONS = [
   'download', 'edit', 'erase', 'events', 'face--add', 'face--satisfied', 'forum', 'hashtag',
   'image', 'information', 'logout', 'menu', 'paint-brush', 'pen', 'search', 'send--alt', 'trash-can',
   'upload', 'user', 'user--avatar', 'volume--mute', 'volume--up', 'email', 'circle-dash',
+  'light', 'asleep', 'laptop', 'checkmark--filled',
 ];
 const iconDir = path.join(root, 'node_modules/@carbon/icons/svg/32');
 const icons = {};

@@ -756,6 +756,15 @@
     else toast(err.message);
   }
 
+  /** Theme selector: reflects and edits the choice held by theme.js. */
+  function openAppearance() {
+    const { mode, accent } = window.ttAppearance.get();
+    const form = $('#appearance-form');
+    form.querySelector(`input[name="mode"][value="${mode}"]`).checked = true;
+    form.querySelector(`input[name="accent"][value="${accent}"]`).checked = true;
+    openDialog('#appearance-dialog');
+  }
+
   function openProfileEditor() {
     const me = state.users.get(state.me.id);
     const form = $('#profile-form');
@@ -1128,6 +1137,7 @@
         case 'edit-profile': openProfileEditor(); break;
         case 'new-channel': $('#channel-form').reset(); openDialog('#channel-dialog'); break;
         case 'emoji-studio': closePicker(); openDialog('#emoji-dialog'); switchEmojiTab('draw'); break;
+        case 'appearance': openAppearance(); break;
         case 'toggle-sound':
           state.soundOn = !state.soundOn;
           storage.set('tt:sound', state.soundOn);
@@ -1315,6 +1325,14 @@
         formError(form, err);
       }
     });
+
+    // Appearance: apply each choice the moment it's picked
+    $('#appearance-form').addEventListener('change', (e) => {
+      if (e.target.name === 'mode' || e.target.name === 'accent') {
+        window.ttAppearance.set({ [e.target.name]: e.target.value });
+      }
+    });
+    $('#appearance-form').addEventListener('submit', (e) => e.preventDefault());
 
     // Emoji studio
     $$('[data-emoji-tab]').forEach((b) => b.addEventListener('click', () => switchEmojiTab(b.dataset.emojiTab)));

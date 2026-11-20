@@ -6,6 +6,7 @@
   <title>talktalk</title>
   <meta name="description" content="A free, open source team chat with channels, direct messages, custom emoji and file sharing.">
   <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <script src="/js/theme.js"></script>
   <link rel="stylesheet" href="/css/carbon.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -15,6 +16,9 @@
 <section id="welcome" class="welcome" hidden>
   <header class="cds--header" aria-label="talktalk">
     <a class="cds--header__name" href="/"><span class="cds--header__name--prefix">talk</span>&nbsp;talk</a>
+    <div class="cds--header__global">
+      <button class="cds--header__action" type="button" data-action="appearance" aria-label="Appearance" title="Appearance"><svg data-icon="color-palette"></svg></button>
+    </div>
   </header>
 
   <main class="welcome-main">
@@ -91,6 +95,7 @@
     <div class="cds--header__global">
       <button class="cds--header__action" type="button" data-action="new-channel" aria-label="New channel" title="New channel"><svg data-icon="add"></svg></button>
       <button class="cds--header__action" type="button" data-action="emoji-studio" aria-label="Emoji studio" title="Emoji studio"><svg data-icon="face--add"></svg></button>
+      <button class="cds--header__action" type="button" data-action="appearance" aria-label="Appearance" title="Appearance"><svg data-icon="color-palette"></svg></button>
       <button class="cds--header__action" type="button" data-action="toggle-sound" id="sound-btn" aria-label="Sound on" title="Sound on"><svg data-icon="volume--up"></svg></button>
       <button class="cds--header__action" type="button" data-action="edit-profile" aria-label="Your profile" title="Your profile"><svg data-icon="user--avatar"></svg></button>
       <button class="cds--header__action" type="button" data-action="logout" aria-label="Log out" title="Log out"><svg data-icon="logout"></svg></button>
@@ -322,6 +327,49 @@
     <div data-emoji-panel="gallery" hidden>
       <div id="emoji-gallery" class="emoji-gallery"></div>
     </div>
+  </div>
+</dialog>
+
+<dialog id="appearance-dialog" class="modal">
+  <div class="modal-header">
+    <p class="modal-label">Settings</p>
+    <h3 class="modal-heading">Appearance</h3>
+    <button class="modal-close" type="button" data-close aria-label="Close"><svg data-icon="close"></svg></button>
+  </div>
+  <form id="appearance-form" class="modal-body appearance">
+    <fieldset class="appearance-group">
+      <legend class="cds--label">Theme</legend>
+      <div class="mode-options">
+        <label class="mode-card">
+          <input type="radio" name="mode" value="system">
+          <span class="mode-preview mode-preview--system" aria-hidden="true"></span>
+          <span class="mode-name"><svg data-icon="laptop"></svg>Auto</span>
+        </label>
+        <label class="mode-card">
+          <input type="radio" name="mode" value="light">
+          <span class="mode-preview mode-preview--light" aria-hidden="true"></span>
+          <span class="mode-name"><svg data-icon="light"></svg>Light</span>
+        </label>
+        <label class="mode-card">
+          <input type="radio" name="mode" value="dark">
+          <span class="mode-preview mode-preview--dark" aria-hidden="true"></span>
+          <span class="mode-name"><svg data-icon="asleep"></svg>Dark</span>
+        </label>
+      </div>
+    </fieldset>
+    <fieldset class="appearance-group">
+      <legend class="cds--label">Accent colour</legend>
+      <div class="accent-options">
+        <label class="accent-option"><input type="radio" name="accent" value="lavender"><span class="swatch" data-swatch="lavender"></span>Lavender</label>
+        <label class="accent-option"><input type="radio" name="accent" value="sky"><span class="swatch" data-swatch="sky"></span>Sky</label>
+        <label class="accent-option"><input type="radio" name="accent" value="mint"><span class="swatch" data-swatch="mint"></span>Mint</label>
+        <label class="accent-option"><input type="radio" name="accent" value="rose"><span class="swatch" data-swatch="rose"></span>Rose</label>
+      </div>
+    </fieldset>
+    <p class="helper">Auto follows your device's light or dark setting. Your choice is saved on this device.</p>
+  </form>
+  <div class="modal-footer single">
+    <button class="cds--btn cds--btn--primary" type="button" data-close>Done</button>
   </div>
 </dialog>
 

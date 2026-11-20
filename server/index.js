@@ -579,13 +579,11 @@ app.get('/files/:id/:name?', requireAuth, wrap((req, res, next) => {
 // ---------------------------------------------------------------------------
 
 app.use(express.static(path.join(__dirname, '..', 'public'), { extensions: ['html'] }));
-// IBM Plex, self-hosted (Carbon's typeface)
-for (const [route, pkg] of [['/fonts/plex-sans', '@fontsource/ibm-plex-sans'], ['/fonts/plex-mono', '@fontsource/ibm-plex-mono']]) {
-  app.use(route, express.static(path.join(path.dirname(require.resolve(`${pkg}/package.json`)), 'files'), {
-    maxAge: '30d',
-    immutable: true,
-  }));
-}
+// Aileron, self-hosted
+app.use('/fonts/aileron', express.static(path.join(path.dirname(require.resolve('@fontsource/aileron/package.json')), 'files'), {
+  maxAge: '30d',
+  immutable: true,
+}));
 
 app.use('/api', (req, res, next) => next(new HttpError(404, 'Unknown API route.')));
 

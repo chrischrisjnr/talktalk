@@ -13,7 +13,7 @@
 
 <!-- ============ SIGN IN ============ -->
 <section id="welcome" class="welcome" hidden>
-  <header class="cds--header theme-g100" aria-label="talktalk">
+  <header class="cds--header" aria-label="talktalk">
     <a class="cds--header__name" href="/"><span class="cds--header__name--prefix">talk</span>&nbsp;talk</a>
   </header>
 
@@ -74,10 +74,10 @@
     <aside class="welcome-aside" aria-label="What you get">
       <p class="display">Talk freely. <span>No ads, no tracking, no algorithms.</span></p>
       <div class="feature-grid">
-        <div class="cds--tile feature"><svg data-icon="hashtag"></svg><h2>Channels</h2><p>Open rooms for every topic. Anyone can start one.</p></div>
-        <div class="cds--tile feature"><svg data-icon="email"></svg><h2>Direct messages</h2><p>Private one-to-one conversations, plus a space for your own notes.</p></div>
-        <div class="cds--tile feature"><svg data-icon="face--add"></svg><h2>Custom emoji</h2><p>Draw pixel emoji or upload your own, then react with them.</p></div>
-        <div class="cds--tile feature"><svg data-icon="attachment"></svg><h2>File sharing</h2><p>Drop in pictures, documents and anything else up to 25 MB.</p></div>
+        <div class="cds--tile feature tint-purple"><svg data-icon="hashtag"></svg><h2>Channels</h2><p>Open rooms for every topic. Anyone can start one.</p></div>
+        <div class="cds--tile feature tint-blue"><svg data-icon="email"></svg><h2>Direct messages</h2><p>Private one-to-one conversations, plus a space for your own notes.</p></div>
+        <div class="cds--tile feature tint-magenta"><svg data-icon="face--add"></svg><h2>Custom emoji</h2><p>Draw pixel emoji or upload your own, then react with them.</p></div>
+        <div class="cds--tile feature tint-green"><svg data-icon="attachment"></svg><h2>File sharing</h2><p>Drop in pictures, documents and anything else up to 25 MB.</p></div>
       </div>
     </aside>
   </main>
@@ -85,7 +85,7 @@
 
 <!-- ============ APP ============ -->
 <section id="app" class="app" hidden>
-  <header class="cds--header theme-g100" aria-label="talktalk">
+  <header class="cds--header" aria-label="talktalk">
     <button id="sidebar-toggle" class="cds--header__action menu-btn" type="button" aria-label="Open menu"><svg data-icon="menu"></svg></button>
     <a class="cds--header__name" href="#"><span class="cds--header__name--prefix">talk</span>&nbsp;talk</a>
     <div class="cds--header__global">
@@ -106,7 +106,7 @@
       <div class="nav-heading">Direct messages</div>
       <ul id="dm-list" class="room-list"></ul>
 
-      <div class="nav-heading">Members <span id="online-count" class="cds--tag cds--tag--gray cds--tag--sm count"></span></div>
+      <div class="nav-heading">Members <span id="online-count" class="cds--tag cds--tag--green cds--tag--sm count"></span></div>
       <ul id="buddy-list" class="room-list"></ul>
     </nav>
 
@@ -200,7 +200,7 @@
     <img id="view-avatar" class="avatar xl" alt="">
     <div class="profile-facts">
       <p id="view-username" class="profile-username"></p>
-      <p id="view-status" class="cds--tag cds--tag--blue status-tag"></p>
+      <p id="view-status" class="cds--tag cds--tag--teal status-tag"></p>
       <p id="view-bio" class="bio"></p>
       <p id="view-meta" class="helper"></p>
     </div>
@@ -337,7 +337,7 @@
 
 <div id="drop-overlay" class="drop-overlay" hidden><div><svg data-icon="upload"></svg>Drop to share</div></div>
 
-<div id="toast" class="cds--toast-notification cds--toast-notification--info toast" role="status" hidden>
+<div id="toast" class="cds--toast-notification cds--toast-notification--info cds--toast-notification--low-contrast toast" role="status" hidden>
   <svg class="cds--toast-notification__icon" data-icon="information"></svg>
   <div class="cds--toast-notification__details">
     <div id="toast-text" class="cds--toast-notification__subtitle"></div>

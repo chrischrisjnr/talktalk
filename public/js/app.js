@@ -140,15 +140,25 @@
   // Avatars & names
   // ------------------------------------------------------------------------
 
-  // Carbon 60-grade colours, picked per name so each person keeps the same one.
-  const AVATAR_COLORS = ['#0f62fe', '#8a3ffc', '#0072c3', '#007d79', '#d02670', '#198038', '#6f6f6f', '#ba4e00'];
+  // Carbon pastel pairs [20-grade background, 80-grade letters], picked per name
+  // so each person keeps the same colour.
+  const AVATAR_COLORS = [
+    ['#e8daff', '#491d8b'], // purple
+    ['#d0e2ff', '#002d9c'], // blue
+    ['#9ef0f0', '#004144'], // teal
+    ['#a7f0ba', '#044317'], // green
+    ['#ffd6e8', '#740937'], // magenta
+    ['#bae6ff', '#003a6d'], // cyan
+    ['#fddc69', '#483700'], // yellow
+    ['#ffd7d9', '#750e13'], // red
+  ];
   function initialsAvatar(name) {
     const letters = (name || '?').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
     let hash = 0;
     for (const ch of name || '') hash = (hash * 31 + ch.codePointAt(0)) >>> 0;
-    const bg = AVATAR_COLORS[hash % AVATAR_COLORS.length];
+    const [bg, fg] = AVATAR_COLORS[hash % AVATAR_COLORS.length];
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="${bg}"/>` +
-      `<text x="32" y="41" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="24" font-weight="400" fill="#ffffff" text-anchor="middle">${
+      `<text x="32" y="41" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="${fg}" text-anchor="middle">${
         letters.replace(/[^A-Z0-9]/g, '') || '?'}</text></svg>`;
     return `data:image/svg+xml,${encodeURIComponent(svg)}`;
   }
@@ -277,7 +287,7 @@
         },
         sigil,
         h('span', { class: 'label' }, roomLabel(room)),
-        unread ? tag(unread > 99 ? '99+' : String(unread), 'blue') : null)
+        unread ? tag(unread > 99 ? '99+' : String(unread), 'magenta') : null)
       );
     };
 
@@ -399,7 +409,7 @@
     let prev = null;
     for (const msg of entry.list) {
       if (!prev || dayKey(prev.createdAt) !== dayKey(msg.createdAt)) {
-        nodes.push(h('div', { class: 'day-divider' }, tag(formatDay(msg.createdAt))));
+        nodes.push(h('div', { class: 'day-divider' }, tag(formatDay(msg.createdAt), 'purple')));
         prev = null;
       }
       const grouped = prev && prev.userId === msg.userId && msg.createdAt - prev.createdAt < 5 * 60 * 1000;

@@ -61,8 +61,8 @@ Security basics are covered: hashed passwords (scrypt), http-only session cookie
 
 ## Design
 
-- **[Carbon Design System](https://carbondesignsystem.com)** by IBM (Apache-2.0): components, Gray 10 light theme and Gray 100 dark theme (follows your device), icons
-- **IBM Plex Sans & Plex Mono** (SIL Open Font License), self-hosted via Fontsource. No requests go to IBM or any other outside server
+- **[Carbon Design System](https://carbondesignsystem.com)** by IBM (Apache-2.0): components, themes (light and dark follow your device) and icons — softened with Carbon's pastel palette grades and rounded corners from Carbon's radius scale
+- **Aileron** by Dot Colon (CC0), self-hosted via Fontsource. No requests go to any outside server
 
 ## License
 

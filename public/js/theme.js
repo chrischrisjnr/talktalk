@@ -6,7 +6,7 @@
 
   const KEY = 'tt:appearance';
   const MODES = ['system', 'light', 'dark'];
-  const ACCENTS = ['lavender', 'sky', 'mint', 'rose'];
+  const ACCENTS = ['lavender', 'sky', 'mint', 'rose', 'neutral'];
   const DEFAULTS = { mode: 'system', accent: 'lavender' };
   const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
   const listeners = new Set();

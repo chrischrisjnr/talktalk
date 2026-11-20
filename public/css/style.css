@@ -56,6 +56,12 @@
   --a-60: #d02670; --a-70: #9f1853; --a-80: #740937; --a-90: #510224;
   --a-rgb: 255, 175, 210; --a-ink-rgb: 116, 9, 55;
 }
+:root[data-accent='neutral'] {
+  /* Carbon Gray (true neutral, no tint) */
+  --a-10: #f4f4f4; --a-20: #e0e0e0; --a-30: #c6c6c6; --a-40: #a8a8a8; --a-50: #8d8d8d;
+  --a-60: #6f6f6f; --a-70: #525252; --a-80: #393939; --a-90: #262626;
+  --a-rgb: 198, 198, 198; --a-ink-rgb: 22, 22, 22;
+}
 
 /* ---------- Light mode (default) ----------
    Also matched on [data-theme] so these re-mappings outrank carbon.css's
@@ -153,6 +159,55 @@
   --cds-button-tertiary: var(--a-30);
   --cds-overlay: rgba(0, 0, 0, 0.55);
 }
+
+/* ---------- Neutral accent ----------
+   The other accents sit on slightly cool / plum-tinted surfaces. Neutral
+   swaps those for Carbon's pure Gray scale so nothing has a colour cast. */
+
+:root[data-accent='neutral']:not([data-theme='dark']) {
+  --tt-canvas: #f4f4f4;
+  --cds-layer-02: #f4f4f4;
+  --cds-layer-accent-01: #e0e0e0;
+  --cds-border-subtle-01: #e0e0e0;
+  --cds-border-subtle-02: #e0e0e0;
+  --cds-border-strong-01: #c6c6c6;
+  --cds-text-primary: #161616;
+  --cds-text-secondary: #525252;
+  --cds-text-helper: #6f6f6f;
+  --cds-text-placeholder: #8d8d8d;
+  --cds-icon-primary: #262626;
+  --cds-icon-secondary: #6f6f6f;
+  --cds-focus: #393939;
+  --cds-interactive: #393939;
+  --cds-border-interactive: #393939;
+  --decor-1: #e0e0e0; --decor-2: #ffffff; --decor-3: #c6c6c6;
+}
+
+:root[data-accent='neutral'][data-theme='dark'] {
+  --tt-shell: #161616;
+  --tt-shell-line: #2b2b2b;
+  --tt-canvas: #1c1c1c;
+  --tt-surface: #262626;
+  --cds-layer-02: #2e2e2e;
+  --cds-layer-accent-01: #393939;
+  --cds-border-subtle-01: #333333;
+  --cds-border-subtle-02: #333333;
+  --cds-border-strong-01: #525252;
+  --cds-text-secondary: #c6c6c6;
+  --cds-text-helper: #a8a8a8;
+  --cds-text-placeholder: #8d8d8d;
+  --cds-icon-secondary: #a8a8a8;
+  --cds-focus: #c6c6c6;
+  --cds-interactive: #c6c6c6;
+  --cds-border-interactive: #c6c6c6;
+  --cds-link-primary: #e0e0e0;
+  --cds-link-primary-hover: #ffffff;
+}
+
+[data-accent='neutral'] .cds--header__name::before { filter: grayscale(1); }
+[data-accent='neutral'] .day-divider .cds--tag { background: var(--tt-accent-softer); color: var(--cds-text-secondary); }
+[data-accent='neutral'] .feature svg[data-icon],
+[data-accent='neutral'] .file-card > svg[data-icon]:first-child { background: var(--a-20); fill: var(--a-80); }
 
 :root {
   --header-h: 3.5rem;
@@ -297,9 +352,9 @@ svg[data-icon] { width: 1rem; height: 1rem; fill: currentColor; flex: none; }
   border-radius: var(--r-xl);
   background:
     radial-gradient(circle at 15% 20%, var(--a-20), transparent 45%),
-    radial-gradient(circle at 85% 15%, var(--blue-20), transparent 40%),
-    radial-gradient(circle at 80% 90%, var(--magenta-20), transparent 45%),
-    radial-gradient(circle at 10% 95%, var(--green-20), transparent 40%),
+    radial-gradient(circle at 85% 15%, var(--decor-1, var(--blue-20)), transparent 40%),
+    radial-gradient(circle at 80% 90%, var(--decor-2, var(--magenta-20)), transparent 45%),
+    radial-gradient(circle at 10% 95%, var(--decor-3, var(--green-20)), transparent 40%),
     var(--a-10);
 }
 .display {
@@ -650,6 +705,7 @@ svg[data-icon] { width: 1rem; height: 1rem; fill: currentColor; flex: none; }
 .swatch[data-swatch='sky'] { background: linear-gradient(135deg, #d0e2ff, #a6c8ff 55%, #4589ff); }
 .swatch[data-swatch='mint'] { background: linear-gradient(135deg, #a7f0ba, #6fdc8c 55%, #24a148); }
 .swatch[data-swatch='rose'] { background: linear-gradient(135deg, #ffd6e8, #ffafd2 55%, #ee5396); }
+.swatch[data-swatch='neutral'] { background: linear-gradient(135deg, #f4f4f4, #c6c6c6 55%, #6f6f6f); }
 
 /* ---------- Emoji studio ---------- */
 

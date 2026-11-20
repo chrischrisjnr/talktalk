@@ -12,10 +12,16 @@
 
 <!-- ============ SIGN IN ============ -->
 <section id="welcome" class="welcome" hidden>
+  <div class="poster" aria-hidden="true">
+    <span class="poster-no">Nº&nbsp;01</span>
+    <span class="poster-word">Talk</span>
+    <span class="poster-word outline">Talk</span>
+    <span class="poster-side">Free&nbsp;·&nbsp;Open&nbsp;source&nbsp;·&nbsp;No&nbsp;ads&nbsp;·&nbsp;No&nbsp;tracking</span>
+  </div>
   <div class="welcome-card">
-    <div class="brand">talktalk</div>
-    <h1>Talk freely.</h1>
-    <p class="muted">Free, open source chat. Channels, direct messages, your own emoji, and file sharing. No ads, no tracking.</p>
+    <div class="kicker">talktalk / chat for your crew</div>
+    <h1>Say it<br>out loud.</h1>
+    <p class="lede">Channels, direct messages, your own emoji and file sharing. Free and open source.</p>
 
     <div class="segmented" role="tablist">
       <button type="button" role="tab" class="active" data-auth-tab="login" aria-selected="true">Sign in</button>
@@ -80,6 +86,7 @@
     <header class="chat-header">
       <button id="sidebar-toggle" class="icon-btn menu-btn" type="button" aria-label="Open sidebar">☰</button>
       <div class="chat-title">
+        <span id="room-kind" class="kicker"></span>
         <h2 id="room-name"></h2>
         <p id="room-topic" class="topic"></p>
       </div>

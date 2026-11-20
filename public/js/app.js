@@ -111,6 +111,7 @@
     typing: new Map(),   // roomId -> Map(userId -> timeout)
     pendingFile: null,
     soundOn: storage.get('tt:sound', true),
+    pinned: true, // is the message list stuck to the newest message?
     socket: null,
   };
 
@@ -120,8 +121,8 @@
 
   function initialsAvatar(name) {
     const letters = (name || '?').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#000"/>` +
-      `<text x="32" y="41" font-family="monospace" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">${
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#111"/>` +
+      `<text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#ecebe6" text-anchor="middle">${
         letters.replace(/[^A-Z0-9]/g, '') || '?'}</text></svg>`;
     return `data:image/svg+xml,${encodeURIComponent(svg)}`;
   }
@@ -318,8 +319,9 @@
   function renderHeader() {
     const room = state.rooms.get(state.currentRoomId);
     if (!room) return;
+    $('#room-kind').textContent = room.kind === 'channel' ? 'Channel' : 'Direct message';
     if (room.kind === 'channel') {
-      $('#room-name').textContent = `# ${room.name}`;
+      $('#room-name').textContent = `#${room.name}`;
       $('#room-topic').textContent = room.topic || 'No topic yet';
       $('#edit-topic-btn').hidden = false;
     } else {
@@ -358,7 +360,7 @@
 
     const prevHeight = container.scrollHeight;
     const prevTop = container.scrollTop;
-    const nearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 120;
+    const nearBottom = state.pinned;
 
     const nodes = [];
     if (entry.hasMore && entry.list.length) {
@@ -370,7 +372,7 @@
     let prev = null;
     for (const msg of entry.list) {
       if (!prev || dayKey(prev.createdAt) !== dayKey(msg.createdAt)) {
-        nodes.push(h('div', { class: 'day-divider' }, formatDay(msg.createdAt)));
+        nodes.push(h('div', { class: 'day-divider' }, h('span', {}, formatDay(msg.createdAt))));
         prev = null;
       }
       const grouped = prev && prev.userId === msg.userId && msg.createdAt - prev.createdAt < 5 * 60 * 1000;
@@ -380,11 +382,8 @@
     container.replaceChildren(...nodes);
 
     if (scroll === 'bottom' || (scroll === 'auto' && nearBottom)) {
+      state.pinned = true;
       container.scrollTop = container.scrollHeight;
-      // Images load later and change the height; keep pinned to the bottom.
-      $$('img', container).forEach((img) => {
-        if (!img.complete) img.addEventListener('load', () => (container.scrollTop = container.scrollHeight), { once: true });
-      });
     } else if (scroll === 'keep') {
       container.scrollTop = container.scrollHeight - prevHeight + prevTop;
     } else {
@@ -395,12 +394,12 @@
   function roomIntro(room) {
     if (room.kind === 'channel') {
       return h('div', { class: 'empty-room' },
-        h('h3', {}, `# ${room.name}`),
+        h('h3', {}, 'It starts', h('br'), 'here.'),
         h('p', {}, `This is the very beginning of #${room.name}. ${room.topic || ''}`));
     }
     const other = state.users.get(room.otherUserId);
     return h('div', { class: 'empty-room' },
-      h('h3', {}, roomLabel(room)),
+      h('h3', {}, ...(room.otherUserId === state.me.id ? ['Your', h('br'), 'notes.'] : ['Just', h('br'), 'you two.'])),
       h('p', {}, room.otherUserId === state.me.id
         ? 'This is your space. Draft messages, keep notes, or park files here.'
         : `This is the start of your conversation with ${other?.displayName ?? 'this member'}.`));
@@ -1174,7 +1173,15 @@
     document.addEventListener('keydown', (e) => e.key === 'Escape' && closePicker());
 
     // Infinite scroll upward
-    $('#messages').addEventListener('scroll', (e) => {
+    // Stay pinned to the newest message while images and fonts finish loading.
+    const messagesEl = $('#messages');
+    const keepPinned = () => { if (state.pinned) messagesEl.scrollTop = messagesEl.scrollHeight; };
+    messagesEl.addEventListener('load', keepPinned, true);
+    document.fonts?.ready.then(keepPinned);
+    window.addEventListener('resize', keepPinned);
+
+    messagesEl.addEventListener('scroll', (e) => {
+      state.pinned = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 80;
       const entry = state.messages.get(state.currentRoomId);
       if (e.target.scrollTop < 40 && entry?.hasMore && !entry.loadingOlder) {
         entry.loadingOlder = true;

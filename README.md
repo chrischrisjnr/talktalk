@@ -1,6 +1,6 @@
 # talktalk
 
-Free, open source chat for your crew. Channels, direct messages, profiles, custom emoji you can draw or upload, and file sharing — in a clean black & white interface.
+Free, open source chat for your crew. Channels, direct messages, profiles, custom emoji you can draw or upload, and file sharing — in a bold, ink-on-paper interface.
 
 No ads. No tracking. No accounts with anyone but you. Run it on your own computer or server and invite your friends.
 
@@ -58,10 +58,9 @@ Deliberately small and dependency-light so anyone can read and change it:
 
 Security basics are covered: hashed passwords (scrypt), http-only session cookies, cross-site request blocking, a strict Content Security Policy, private DMs and DM files, and uploaded files that can't run code on the site.
 
-## Fonts
+## Typeface
 
-- **Terminal Grotesque Open** by Raphaël Bastide — SIL Open Font License (see `public/fonts/LICENSE-terminal-grotesque.md`)
-- **Aileron** by Dot Colon — CC0, via Fontsource
+**Aileron** by Dot Colon (CC0, via Fontsource) — used for everything, from the heavy capital headlines to the body text.
 
 ## License
 

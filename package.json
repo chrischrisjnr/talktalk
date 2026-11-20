@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning server/index.js",
     "dev": "node --watch --disable-warning=ExperimentalWarning server/index.js",
-    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
+    "build": "node scripts/build.mjs"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,8 @@
   },
   "homepage": "https://github.com/chrischrisjnr/talktalk#readme",
   "dependencies": {
-    "@fontsource/aileron": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
     "cookie-parser": "^1.4.7",
     "express": "^4.22.3",
     "multer": "^2.5.0",
@@ -32,5 +34,10 @@
   },
   "engines": {
     "node": ">=22.13"
+  },
+  "devDependencies": {
+    "@carbon/icons": "^11.92.0",
+    "@carbon/styles": "^1.120.0",
+    "sass": "^1.108.2"
   }
 }

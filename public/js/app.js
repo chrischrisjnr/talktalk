@@ -61,10 +61,31 @@
     });
   }
 
+  /** A Carbon icon (from icons.js) as an inline SVG element. Icon markup is static and trusted. */
+  function icon(name, cls = '') {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    fillIcon(svg, name);
+    if (cls) svg.setAttribute('class', cls);
+    return svg;
+  }
+  function fillIcon(svg, name) {
+    svg.setAttribute('viewBox', '0 0 32 32');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    svg.dataset.icon = name;
+    svg.innerHTML = window.ICONS[name] || '';
+  }
+  /** Fill every <svg data-icon="..."> placeholder in the static HTML. */
+  const hydrateIcons = (root = document) => $$('svg[data-icon]', root).forEach((svg) => fillIcon(svg, svg.dataset.icon));
+
+  /** Carbon tag */
+  const tag = (text, color = 'gray', size = 'sm') =>
+    h('span', { class: `cds--tag cds--tag--${color} cds--tag--${size}` }, h('span', { class: 'cds--tag__label' }, text));
+
   let toastTimer;
   function toast(message) {
     const el = $('#toast');
-    el.textContent = message;
+    $('#toast-text').textContent = message;
     el.hidden = false;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => (el.hidden = true), 3500);
@@ -119,10 +140,15 @@
   // Avatars & names
   // ------------------------------------------------------------------------
 
+  // Carbon 60-grade colours, picked per name so each person keeps the same one.
+  const AVATAR_COLORS = ['#0f62fe', '#8a3ffc', '#0072c3', '#007d79', '#d02670', '#198038', '#6f6f6f', '#ba4e00'];
   function initialsAvatar(name) {
     const letters = (name || '?').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#111"/>` +
-      `<text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#ecebe6" text-anchor="middle">${
+    let hash = 0;
+    for (const ch of name || '') hash = (hash * 31 + ch.codePointAt(0)) >>> 0;
+    const bg = AVATAR_COLORS[hash % AVATAR_COLORS.length];
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="${bg}"/>` +
+      `<text x="32" y="41" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="24" font-weight="400" fill="#ffffff" text-anchor="middle">${
         letters.replace(/[^A-Z0-9]/g, '') || '?'}</text></svg>`;
     return `data:image/svg+xml,${encodeURIComponent(svg)}`;
   }
@@ -224,8 +250,9 @@
 
   function updateSoundButton() {
     const btn = $('#sound-btn');
-    btn.classList.toggle('off', !state.soundOn);
     btn.title = state.soundOn ? 'Sound on' : 'Sound off';
+    btn.setAttribute('aria-label', btn.title);
+    fillIcon($('svg', btn), state.soundOn ? 'volume--up' : 'volume--mute');
   }
 
   // ------------------------------------------------------------------------
@@ -240,7 +267,7 @@
     const roomItem = (room) => {
       const unread = state.unread.get(room.id);
       const sigil = room.kind === 'channel'
-        ? h('span', { class: 'sigil' }, '#')
+        ? icon('hashtag')
         : h('span', { class: `presence${state.users.get(room.otherUserId)?.online ? ' on' : ''}` });
       return h('li', {},
         h('button', {
@@ -250,7 +277,7 @@
         },
         sigil,
         h('span', { class: 'label' }, roomLabel(room)),
-        unread ? h('span', { class: 'badge' }, unread > 99 ? '99+' : unread) : null)
+        unread ? tag(unread > 99 ? '99+' : String(unread), 'blue') : null)
       );
     };
 
@@ -265,7 +292,7 @@
           h('span', { class: `presence${u.online ? ' on' : ''}` }),
           h('span', { class: 'label' }, u.id === state.me.id ? `${u.displayName} (you)` : u.displayName)))
     ));
-    $('#online-count').textContent = `${users.filter((u) => u.online).length}/${users.length}`;
+    $('#online-count').textContent = `${users.filter((u) => u.online).length} online`;
 
     // "Me" card
     const me = state.users.get(state.me.id) || state.me;
@@ -364,7 +391,7 @@
 
     const nodes = [];
     if (entry.hasMore && entry.list.length) {
-      nodes.push(h('button', { class: 'btn small load-more', type: 'button', onclick: loadOlder }, 'Load older messages'));
+      nodes.push(h('button', { class: 'cds--btn cds--btn--tertiary cds--btn--sm load-more', type: 'button', onclick: loadOlder }, 'Load older messages'));
     } else {
       nodes.push(roomIntro(room));
     }
@@ -372,7 +399,7 @@
     let prev = null;
     for (const msg of entry.list) {
       if (!prev || dayKey(prev.createdAt) !== dayKey(msg.createdAt)) {
-        nodes.push(h('div', { class: 'day-divider' }, h('span', {}, formatDay(msg.createdAt))));
+        nodes.push(h('div', { class: 'day-divider' }, tag(formatDay(msg.createdAt))));
         prev = null;
       }
       const grouped = prev && prev.userId === msg.userId && msg.createdAt - prev.createdAt < 5 * 60 * 1000;
@@ -394,12 +421,15 @@
   function roomIntro(room) {
     if (room.kind === 'channel') {
       return h('div', { class: 'empty-room' },
-        h('h3', {}, 'It starts', h('br'), 'here.'),
+        icon('hashtag', 'intro-icon'),
+        h('h3', {}, `Welcome to #${room.name}`),
         h('p', {}, `This is the very beginning of #${room.name}. ${room.topic || ''}`));
     }
     const other = state.users.get(room.otherUserId);
+    const self = room.otherUserId === state.me.id;
     return h('div', { class: 'empty-room' },
-      h('h3', {}, ...(room.otherUserId === state.me.id ? ['Your', h('br'), 'notes.'] : ['Just', h('br'), 'you two.'])),
+      icon(self ? 'document' : 'email', 'intro-icon'),
+      h('h3', {}, self ? 'Your notes' : `You and ${other?.displayName ?? 'this member'}`),
       h('p', {}, room.otherUserId === state.me.id
         ? 'This is your space. Draft messages, keep notes, or park files here.'
         : `This is the start of your conversation with ${other?.displayName ?? 'this member'}.`));
@@ -430,11 +460,12 @@
     if (msg.file) content.append(renderAttachment(msg.file));
     content.append(renderReactions(msg));
 
+    const iconBtn = 'cds--btn cds--btn--ghost cds--btn--icon-only cds--btn--sm';
     const actions = h('div', { class: 'msg-actions' },
-      h('button', { class: 'icon-btn', type: 'button', title: 'Add reaction', 'aria-label': 'Add reaction',
-        onclick: (e) => openPicker(e.currentTarget, { mode: 'react', messageId: msg.id }) }, '☺'),
-      isMine ? h('button', { class: 'icon-btn', type: 'button', title: 'Delete', 'aria-label': 'Delete message',
-        onclick: () => deleteMessage(msg.id) }, '×') : null);
+      h('button', { class: iconBtn, type: 'button', title: 'Add reaction', 'aria-label': 'Add reaction',
+        onclick: (e) => openPicker(e.currentTarget, { mode: 'react', messageId: msg.id }) }, icon('face--add', 'cds--btn__icon')),
+      isMine ? h('button', { class: iconBtn, type: 'button', title: 'Delete', 'aria-label': 'Delete message',
+        onclick: () => deleteMessage(msg.id) }, icon('trash-can', 'cds--btn__icon')) : null);
 
     return h('div', { class: `msg${grouped ? ' grouped' : ''}`, dataset: { id: msg.id } }, left, content, actions);
   }
@@ -444,13 +475,14 @@
       return h('div', { class: 'attachment' },
         h('img', { src: file.url, alt: file.name, loading: 'lazy', onclick: () => lightbox(file.url, file.name) }));
     }
-    const ext = (file.name.split('.').pop() || 'file').slice(0, 5).toUpperCase();
+    const ext = file.name.includes('.') ? file.name.split('.').pop().slice(0, 5).toUpperCase() : 'FILE';
     return h('div', { class: 'attachment' },
-      h('a', { class: 'file-card', href: `${file.url}?download`, download: file.name },
-        h('span', { class: 'ext' }, ext),
+      h('a', { class: 'file-card', href: `${file.url}?download`, download: file.name, title: `Download ${file.name}` },
+        icon('document'),
         h('span', { class: 'meta' },
           h('span', { class: 'name' }, file.name),
-          h('span', { class: 'size' }, `${formatSize(file.size)} · download`))));
+          h('span', { class: 'size' }, `${ext} · ${formatSize(file.size)}`)),
+        icon('download', 'dl')));
   }
 
   function renderReactions(msg) {
@@ -470,7 +502,7 @@
       wrap.append(h('button', {
         type: 'button', class: 'reaction add', title: 'Add reaction', 'aria-label': 'Add reaction',
         onclick: (e) => openPicker(e.currentTarget, { mode: 'react', messageId: msg.id }),
-      }, '☺＋'));
+      }, icon('face--add')));
     } else {
       wrap.hidden = true;
     }
@@ -868,7 +900,10 @@
   }
 
   function switchEmojiTab(tab) {
-    $$('[data-emoji-tab]').forEach((b) => b.classList.toggle('active', b.dataset.emojiTab === tab));
+    $$('[data-emoji-tab]').forEach((b) => {
+      b.classList.toggle('cds--tabs__nav-item--selected', b.dataset.emojiTab === tab);
+      b.setAttribute('aria-selected', b.dataset.emojiTab === tab);
+    });
     $$('[data-emoji-panel]').forEach((p) => (p.hidden = p.dataset.emojiPanel !== tab));
     if (tab === 'gallery') renderEmojiGallery();
   }
@@ -883,9 +918,10 @@
     gallery.replaceChildren(...list.map((e) => h('div', { class: 'emoji-tile' },
       h('img', { src: e.url, alt: '' }),
       h('span', {}, `:${e.name}:`),
-      h('span', { class: 'muted small' }, `by ${userName(e.uploaderId)}`),
+      h('span', { class: 'helper' }, `by ${userName(e.uploaderId)}`),
       e.uploaderId === state.me.id
-        ? h('button', { type: 'button', class: 'btn small', onclick: () => deleteEmoji(e.name) }, 'Delete')
+        ? h('button', { type: 'button', class: 'cds--btn cds--btn--danger--ghost cds--btn--sm', onclick: () => deleteEmoji(e.name) },
+          'Delete', icon('trash-can', 'cds--btn__icon'))
         : null)));
   }
 
@@ -1035,16 +1071,22 @@
     $('#login-form').username.focus();
   }
 
+  function setAuthError(message) {
+    $('#auth-error').textContent = message || '';
+    $('#auth-error-box').hidden = !message;
+  }
+
   function bindAuth() {
     $$('[data-auth-tab]').forEach((tab) => tab.addEventListener('click', () => {
       const which = tab.dataset.authTab;
       $$('[data-auth-tab]').forEach((t) => {
-        t.classList.toggle('active', t === tab);
+        t.classList.toggle('cds--content-switcher--selected', t === tab);
         t.setAttribute('aria-selected', t === tab);
       });
       $('#login-form').hidden = which !== 'login';
       $('#signup-form').hidden = which !== 'signup';
-      $('#auth-error').textContent = '';
+      $('.login-title').textContent = which === 'login' ? 'Log in to talktalk' : 'Create your account';
+      setAuthError('');
       $(`#${which}-form`).username.focus();
     }));
 
@@ -1054,12 +1096,12 @@
         const form = e.currentTarget;
         const button = $('button[type=submit]', form);
         button.disabled = true;
-        $('#auth-error').textContent = '';
+        setAuthError('');
         try {
           const { user } = await api('POST', url, Object.fromEntries(new FormData(form)));
           await startApp(user);
         } catch (err) {
-          $('#auth-error').textContent = err.message;
+          setAuthError(err.message);
         } finally {
           button.disabled = false;
         }
@@ -1093,7 +1135,7 @@
     // Close buttons in dialogs
     $$('dialog [data-close]').forEach((btn) => btn.addEventListener('click', () => btn.closest('dialog').close()));
     // Click on the backdrop closes a dialog
-    $$('dialog.dialog').forEach((dlg) => dlg.addEventListener('mousedown', (e) => {
+    $$('dialog.modal').forEach((dlg) => dlg.addEventListener('mousedown', (e) => {
       if (e.target === dlg) {
         const r = dlg.getBoundingClientRect();
         const outside = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
@@ -1291,17 +1333,15 @@
   }
 
   async function boot() {
+    hydrateIcons();
     bindAuth();
     bindApp();
     try {
       const { user } = await api('GET', '/api/me');
       await startApp(user);
     } catch (err) {
-      if (err.status === 401) showWelcome();
-      else {
-        showWelcome();
-        $('#auth-error').textContent = 'Could not reach the server. Is it running?';
-      }
+      showWelcome();
+      if (err.status !== 401) setAuthError('Could not reach the server. Is it running?');
     }
   }
 

@@ -1,6 +1,6 @@
 # talktalk
 
-Free, open source chat for your crew. Channels, direct messages, profiles, custom emoji you can draw or upload, and file sharing — in a bold, ink-on-paper interface.
+Free, open source chat for your crew. Channels, direct messages, profiles, custom emoji you can draw or upload, and file sharing — built on IBM's open source [Carbon Design System](https://carbondesignsystem.com).
 
 No ads. No tracking. No accounts with anyone but you. Run it on your own computer or server and invite your friends.
 
@@ -53,14 +53,16 @@ Enter sends, Shift+Enter makes a new line.
 Deliberately small and dependency-light so anyone can read and change it:
 
 - `server/` — Node.js + Express + Socket.IO, with the built-in SQLite database (no database server to install)
-- `public/` — plain HTML, CSS and JavaScript, no build step
+- `public/` — plain HTML, CSS and JavaScript using Carbon components; nothing to build to run it
+- `styles/carbon.scss` + `scripts/build.mjs` — produce `public/css/carbon.css` (a slim Carbon build) and `public/js/icons.js` (Carbon icons). The results are committed, so you only run `npm run build` after changing those
 - `test/` — run `npm test`
 
 Security basics are covered: hashed passwords (scrypt), http-only session cookies, cross-site request blocking, a strict Content Security Policy, private DMs and DM files, and uploaded files that can't run code on the site.
 
-## Typeface
+## Design
 
-**Aileron** by Dot Colon (CC0, via Fontsource) — used for everything, from the heavy capital headlines to the body text.
+- **[Carbon Design System](https://carbondesignsystem.com)** by IBM (Apache-2.0): components, Gray 10 light theme and Gray 100 dark theme (follows your device), icons
+- **IBM Plex Sans & Plex Mono** (SIL Open Font License), self-hosted via Fontsource. No requests go to IBM or any other outside server
 
 ## License
 

@@ -6,91 +6,129 @@
   <title>talktalk</title>
   <meta name="description" content="A free, open source team chat with channels, direct messages, custom emoji and file sharing.">
   <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/carbon.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
 <!-- ============ SIGN IN ============ -->
 <section id="welcome" class="welcome" hidden>
-  <div class="poster" aria-hidden="true">
-    <span class="poster-no">Nº&nbsp;01</span>
-    <span class="poster-word">Talk</span>
-    <span class="poster-word outline">Talk</span>
-    <span class="poster-side">Free&nbsp;·&nbsp;Open&nbsp;source&nbsp;·&nbsp;No&nbsp;ads&nbsp;·&nbsp;No&nbsp;tracking</span>
-  </div>
-  <div class="welcome-card">
-    <div class="kicker">talktalk / chat for your crew</div>
-    <h1>Say it<br>out loud.</h1>
-    <p class="lede">Channels, direct messages, your own emoji and file sharing. Free and open source.</p>
+  <header class="cds--header theme-g100" aria-label="talktalk">
+    <a class="cds--header__name" href="/"><span class="cds--header__name--prefix">talk</span>&nbsp;talk</a>
+  </header>
 
-    <div class="segmented" role="tablist">
-      <button type="button" role="tab" class="active" data-auth-tab="login" aria-selected="true">Sign in</button>
-      <button type="button" role="tab" data-auth-tab="signup" aria-selected="false">Create account</button>
+  <main class="welcome-main">
+    <div class="login">
+      <p class="eyebrow">Free and open source chat</p>
+      <h1 class="login-title">Log in to talktalk</h1>
+
+      <div class="cds--content-switcher auth-switcher" role="tablist" aria-label="Log in or create an account">
+        <button type="button" role="tab" class="cds--content-switcher-btn cds--content-switcher--selected" data-auth-tab="login" aria-selected="true">
+          <span class="cds--content-switcher__label">Log in</span>
+        </button>
+        <button type="button" role="tab" class="cds--content-switcher-btn" data-auth-tab="signup" aria-selected="false">
+          <span class="cds--content-switcher__label">Create account</span>
+        </button>
+      </div>
+
+      <form id="login-form" class="form-stack">
+        <div class="cds--form-item">
+          <label class="cds--label" for="login-username">Username</label>
+          <input id="login-username" class="cds--text-input" name="username" autocomplete="username" required maxlength="24">
+        </div>
+        <div class="cds--form-item">
+          <label class="cds--label" for="login-password">Password</label>
+          <input id="login-password" class="cds--text-input" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="cds--btn cds--btn--primary wide-btn" type="submit">Continue<svg class="cds--btn__icon" data-icon="arrow--right"></svg></button>
+      </form>
+
+      <form id="signup-form" class="form-stack" hidden>
+        <div class="cds--form-item">
+          <label class="cds--label" for="signup-username">Username</label>
+          <input id="signup-username" class="cds--text-input" name="username" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" title="3–24 letters, numbers or underscores">
+          <div class="cds--form__helper-text">3–24 letters, numbers or underscores</div>
+        </div>
+        <div class="cds--form-item">
+          <label class="cds--label" for="signup-display">Display name <span class="optional">(optional)</span></label>
+          <input id="signup-display" class="cds--text-input" name="displayName" maxlength="40" placeholder="What should people call you?">
+        </div>
+        <div class="cds--form-item">
+          <label class="cds--label" for="signup-password">Password</label>
+          <input id="signup-password" class="cds--text-input" name="password" type="password" autocomplete="new-password" required minlength="6">
+          <div class="cds--form__helper-text">At least 6 characters</div>
+        </div>
+        <button class="cds--btn cds--btn--primary wide-btn" type="submit">Create account<svg class="cds--btn__icon" data-icon="arrow--right"></svg></button>
+      </form>
+
+      <div id="auth-error-box" class="cds--inline-notification cds--inline-notification--error cds--inline-notification--low-contrast" role="alert" hidden>
+        <div class="cds--inline-notification__details">
+          <svg class="cds--inline-notification__icon" data-icon="information"></svg>
+          <div class="cds--inline-notification__text-wrapper">
+            <div id="auth-error" class="cds--inline-notification__subtitle"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <form id="login-form" class="stack">
-      <label>Username <input name="username" autocomplete="username" required maxlength="24"></label>
-      <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
-      <button class="btn primary block" type="submit">Sign in →</button>
-    </form>
-
-    <form id="signup-form" class="stack" hidden>
-      <label>Username <input name="username" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" title="3–24 letters, numbers or underscores"></label>
-      <label>Display name <input name="displayName" maxlength="40" placeholder="What should people call you?"></label>
-      <label>Password <input name="password" type="password" autocomplete="new-password" required minlength="6"></label>
-      <button class="btn primary block" type="submit">Create account →</button>
-    </form>
-
-    <p id="auth-error" class="error" role="alert"></p>
-  </div>
+    <aside class="welcome-aside" aria-label="What you get">
+      <p class="display">Talk freely. <span>No ads, no tracking, no algorithms.</span></p>
+      <div class="feature-grid">
+        <div class="cds--tile feature"><svg data-icon="hashtag"></svg><h2>Channels</h2><p>Open rooms for every topic. Anyone can start one.</p></div>
+        <div class="cds--tile feature"><svg data-icon="email"></svg><h2>Direct messages</h2><p>Private one-to-one conversations, plus a space for your own notes.</p></div>
+        <div class="cds--tile feature"><svg data-icon="face--add"></svg><h2>Custom emoji</h2><p>Draw pixel emoji or upload your own, then react with them.</p></div>
+        <div class="cds--tile feature"><svg data-icon="attachment"></svg><h2>File sharing</h2><p>Drop in pictures, documents and anything else up to 25 MB.</p></div>
+      </div>
+    </aside>
+  </main>
 </section>
 
 <!-- ============ APP ============ -->
 <section id="app" class="app" hidden>
-  <aside id="sidebar" class="sidebar">
-    <div class="workspace">
-      <div class="brand">talktalk</div>
-      <button class="icon-btn" type="button" data-action="new-channel" title="New channel" aria-label="New channel">＋</button>
+  <header class="cds--header theme-g100" aria-label="talktalk">
+    <button id="sidebar-toggle" class="cds--header__action menu-btn" type="button" aria-label="Open menu"><svg data-icon="menu"></svg></button>
+    <a class="cds--header__name" href="#"><span class="cds--header__name--prefix">talk</span>&nbsp;talk</a>
+    <div class="cds--header__global">
+      <button class="cds--header__action" type="button" data-action="new-channel" aria-label="New channel" title="New channel"><svg data-icon="add"></svg></button>
+      <button class="cds--header__action" type="button" data-action="emoji-studio" aria-label="Emoji studio" title="Emoji studio"><svg data-icon="face--add"></svg></button>
+      <button class="cds--header__action" type="button" data-action="toggle-sound" id="sound-btn" aria-label="Sound on" title="Sound on"><svg data-icon="volume--up"></svg></button>
+      <button class="cds--header__action" type="button" data-action="edit-profile" aria-label="Your profile" title="Your profile"><svg data-icon="user--avatar"></svg></button>
+      <button class="cds--header__action" type="button" data-action="logout" aria-label="Log out" title="Log out"><svg data-icon="logout"></svg></button>
     </div>
+  </header>
 
+  <aside id="sidebar" class="sidebar" aria-label="Conversations">
     <nav class="sidebar-scroll">
-      <div class="section-label">Channels</div>
+      <div class="nav-heading">Channels</div>
       <ul id="channel-list" class="room-list"></ul>
-      <button class="add-link" type="button" data-action="new-channel">＋ Add channel</button>
+      <button class="nav-add" type="button" data-action="new-channel"><svg data-icon="add"></svg>Add channel</button>
 
-      <div class="section-label">Direct messages</div>
+      <div class="nav-heading">Direct messages</div>
       <ul id="dm-list" class="room-list"></ul>
 
-      <div class="section-label">Members <span id="online-count" class="count"></span></div>
+      <div class="nav-heading">Members <span id="online-count" class="cds--tag cds--tag--gray cds--tag--sm count"></span></div>
       <ul id="buddy-list" class="room-list"></ul>
     </nav>
 
-    <div class="sidebar-footer">
-      <button class="me-card" type="button" data-action="edit-profile">
-        <img id="me-avatar" class="avatar" alt="">
-        <span class="me-text">
-          <span id="me-name" class="me-name"></span>
-          <span id="me-status" class="me-status"></span>
-        </span>
-      </button>
-      <div class="footer-actions">
-        <button class="icon-btn" type="button" data-action="emoji-studio" title="Emoji studio" aria-label="Emoji studio">☺</button>
-        <button class="icon-btn" type="button" data-action="toggle-sound" id="sound-btn" title="Sound on" aria-label="Toggle sound">♪</button>
-        <button class="icon-btn" type="button" data-action="logout" title="Sign out" aria-label="Sign out">⏻</button>
-      </div>
-    </div>
+    <button class="me-card" type="button" data-action="edit-profile">
+      <img id="me-avatar" class="avatar" alt="">
+      <span class="me-text">
+        <span id="me-name" class="me-name"></span>
+        <span id="me-status" class="me-status"></span>
+      </span>
+      <svg class="me-edit" data-icon="edit"></svg>
+    </button>
   </aside>
   <div id="scrim" class="scrim" hidden></div>
 
   <main class="chat">
     <header class="chat-header">
-      <button id="sidebar-toggle" class="icon-btn menu-btn" type="button" aria-label="Open sidebar">☰</button>
       <div class="chat-title">
-        <span id="room-kind" class="kicker"></span>
+        <p id="room-kind" class="eyebrow"></p>
         <h2 id="room-name"></h2>
         <p id="room-topic" class="topic"></p>
       </div>
-      <button id="edit-topic-btn" class="btn ghost small" type="button" hidden>Edit topic</button>
+      <button id="edit-topic-btn" class="cds--btn cds--btn--ghost cds--btn--sm" type="button" hidden>Edit topic<svg class="cds--btn__icon" data-icon="edit"></svg></button>
     </header>
 
     <div id="messages" class="messages" aria-live="polite"></div>
@@ -98,141 +136,216 @@
     <form id="composer" class="composer">
       <div class="composer-box">
         <div id="attachment-chip" class="attachment-chip" hidden>
+          <svg data-icon="document"></svg>
           <span id="attachment-name"></span>
-          <button type="button" id="attachment-remove" class="icon-btn small" aria-label="Remove attachment">×</button>
+          <button type="button" id="attachment-remove" class="chip-close" aria-label="Remove attachment"><svg data-icon="close"></svg></button>
         </div>
-        <textarea id="message-input" rows="1" maxlength="4000" placeholder="Message"></textarea>
+        <label class="visually-hidden" for="message-input">Message</label>
+        <textarea id="message-input" class="composer-input" rows="1" maxlength="4000" placeholder="Message"></textarea>
         <div class="composer-tools">
-          <label class="icon-btn" title="Attach a file">⎘<input id="file-input" type="file" hidden></label>
-          <button type="button" class="icon-btn" id="composer-emoji" title="Emoji" aria-label="Insert emoji">☺</button>
+          <label class="cds--btn cds--btn--ghost cds--btn--icon-only cds--btn--sm tool" title="Attach a file">
+            <svg class="cds--btn__icon" data-icon="attachment"></svg><span class="visually-hidden">Attach a file</span>
+            <input id="file-input" type="file" hidden>
+          </label>
+          <button type="button" class="cds--btn cds--btn--ghost cds--btn--icon-only cds--btn--sm tool" id="composer-emoji" title="Emoji" aria-label="Insert emoji"><svg class="cds--btn__icon" data-icon="face--satisfied"></svg></button>
           <span id="typing" class="typing"></span>
-          <button class="btn primary small" type="submit">Send ↵</button>
+          <button class="cds--btn cds--btn--primary cds--btn--sm send-btn" type="submit">Send<svg class="cds--btn__icon" data-icon="send--alt"></svg></button>
         </div>
         <div id="upload-progress" class="progress" hidden><div></div></div>
       </div>
-      <p class="hint">*bold*  _italic_  `code`  :emoji_name:  ·  Shift+Enter for a new line  ·  drop files anywhere</p>
+      <p class="hint">*bold* · _italic_ · `code` · :emoji_name: · Shift+Enter for a new line · Drop files anywhere to share</p>
     </form>
   </main>
 </section>
 
-<!-- ============ DIALOGS ============ -->
-<dialog id="profile-dialog" class="dialog">
-  <header class="dialog-head"><h3>Your profile</h3><button class="icon-btn" data-close aria-label="Close">×</button></header>
-  <form id="profile-form" class="stack" method="dialog">
+<!-- ============ MODALS ============ -->
+<dialog id="profile-dialog" class="modal">
+  <div class="modal-header">
+    <p class="modal-label">Account</p>
+    <h3 class="modal-heading">Your profile</h3>
+    <button class="modal-close" type="button" data-close aria-label="Close"><svg data-icon="close"></svg></button>
+  </div>
+  <form id="profile-form" class="modal-body form-stack">
     <div class="avatar-edit">
       <img id="profile-avatar-preview" class="avatar xl" alt="">
-      <label class="btn small">Upload photo<input id="avatar-input" type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden></label>
+      <label class="cds--btn cds--btn--tertiary cds--btn--sm">Upload photo<svg class="cds--btn__icon" data-icon="upload"></svg><input id="avatar-input" type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden></label>
     </div>
-    <label>Display name <input name="displayName" maxlength="40" required></label>
-    <label>Status <input name="status" maxlength="120" placeholder="Out to lunch"></label>
-    <label>About <textarea name="bio" rows="4" maxlength="1000" placeholder="A few words about you"></textarea></label>
-    <p class="error" data-error></p>
-    <div class="dialog-actions">
-      <button class="btn" type="button" data-close>Cancel</button>
-      <button class="btn primary" type="submit">Save</button>
+    <div class="cds--form-item">
+      <label class="cds--label" for="pf-name">Display name</label>
+      <input id="pf-name" class="cds--text-input" name="displayName" maxlength="40" required>
     </div>
+    <div class="cds--form-item">
+      <label class="cds--label" for="pf-status">Status</label>
+      <input id="pf-status" class="cds--text-input" name="status" maxlength="120" placeholder="Out to lunch">
+    </div>
+    <div class="cds--form-item">
+      <label class="cds--label" for="pf-bio">About</label>
+      <textarea id="pf-bio" class="cds--text-area" name="bio" rows="4" maxlength="1000" placeholder="A few words about you"></textarea>
+    </div>
+    <p class="form-error" data-error></p>
   </form>
+  <div class="modal-footer">
+    <button class="cds--btn cds--btn--secondary" type="button" data-close>Cancel</button>
+    <button class="cds--btn cds--btn--primary" type="submit" form="profile-form">Save</button>
+  </div>
 </dialog>
 
-<dialog id="user-dialog" class="dialog">
-  <header class="dialog-head"><h3>Profile</h3><button class="icon-btn" data-close aria-label="Close">×</button></header>
-  <div class="profile-view">
+<dialog id="user-dialog" class="modal">
+  <div class="modal-header">
+    <p class="modal-label">Member</p>
+    <h3 id="view-name" class="modal-heading"></h3>
+    <button class="modal-close" type="button" data-close aria-label="Close"><svg data-icon="close"></svg></button>
+  </div>
+  <div class="modal-body profile-view">
     <img id="view-avatar" class="avatar xl" alt="">
-    <h3 id="view-name"></h3>
-    <p id="view-username" class="muted"></p>
-    <p id="view-status" class="status-line"></p>
-    <p id="view-bio" class="bio"></p>
-    <p id="view-meta" class="muted small"></p>
-    <div class="dialog-actions">
-      <button id="view-dm-btn" class="btn primary block" type="button">Message</button>
+    <div class="profile-facts">
+      <p id="view-username" class="profile-username"></p>
+      <p id="view-status" class="cds--tag cds--tag--blue status-tag"></p>
+      <p id="view-bio" class="bio"></p>
+      <p id="view-meta" class="helper"></p>
     </div>
+  </div>
+  <div class="modal-footer single">
+    <button id="view-dm-btn" class="cds--btn cds--btn--primary" type="button"></button>
   </div>
 </dialog>
 
-<dialog id="channel-dialog" class="dialog">
-  <header class="dialog-head"><h3>New channel</h3><button class="icon-btn" data-close aria-label="Close">×</button></header>
-  <form id="channel-form" class="stack" method="dialog">
-    <label>Name <input name="name" required maxlength="40" placeholder="e.g. design-crit"></label>
-    <label>Topic <span class="muted">(optional)</span> <input name="topic" maxlength="250" placeholder="What's it about?"></label>
-    <p class="error" data-error></p>
-    <div class="dialog-actions">
-      <button class="btn" type="button" data-close>Cancel</button>
-      <button class="btn primary" type="submit">Create</button>
-    </div>
-  </form>
-</dialog>
-
-<dialog id="topic-dialog" class="dialog">
-  <header class="dialog-head"><h3>Edit topic</h3><button class="icon-btn" data-close aria-label="Close">×</button></header>
-  <form id="topic-form" class="stack" method="dialog">
-    <label>Topic <input name="topic" maxlength="250"></label>
-    <p class="error" data-error></p>
-    <div class="dialog-actions">
-      <button class="btn" type="button" data-close>Cancel</button>
-      <button class="btn primary" type="submit">Save</button>
-    </div>
-  </form>
-</dialog>
-
-<dialog id="emoji-dialog" class="dialog wide">
-  <header class="dialog-head"><h3>Emoji studio</h3><button class="icon-btn" data-close aria-label="Close">×</button></header>
-  <div class="segmented" role="tablist">
-    <button type="button" class="active" data-emoji-tab="draw">Draw</button>
-    <button type="button" data-emoji-tab="upload">Upload</button>
-    <button type="button" data-emoji-tab="gallery">All emoji</button>
+<dialog id="channel-dialog" class="modal">
+  <div class="modal-header">
+    <p class="modal-label">Channels</p>
+    <h3 class="modal-heading">Create a channel</h3>
+    <button class="modal-close" type="button" data-close aria-label="Close"><svg data-icon="close"></svg></button>
   </div>
+  <form id="channel-form" class="modal-body form-stack">
+    <div class="cds--form-item">
+      <label class="cds--label" for="ch-name">Name</label>
+      <input id="ch-name" class="cds--text-input" name="name" required maxlength="40" placeholder="e.g. design-crit">
+      <div class="cds--form__helper-text">Lowercase letters, numbers, - and _</div>
+    </div>
+    <div class="cds--form-item">
+      <label class="cds--label" for="ch-topic">Topic <span class="optional">(optional)</span></label>
+      <input id="ch-topic" class="cds--text-input" name="topic" maxlength="250" placeholder="What's it about?">
+    </div>
+    <p class="form-error" data-error></p>
+  </form>
+  <div class="modal-footer">
+    <button class="cds--btn cds--btn--secondary" type="button" data-close>Cancel</button>
+    <button class="cds--btn cds--btn--primary" type="submit" form="channel-form">Create</button>
+  </div>
+</dialog>
 
-  <div data-emoji-panel="draw" class="studio">
-    <div class="paint">
-      <canvas id="paint-canvas" width="16" height="16" aria-label="16 by 16 pixel drawing grid"></canvas>
-      <div class="paint-side">
-        <div id="palette" class="palette"></div>
-        <div class="tool-row">
-          <button type="button" class="btn small" data-tool="pen">Pen</button>
-          <button type="button" class="btn small" data-tool="eraser">Eraser</button>
-          <button type="button" class="btn small" data-tool="fill">Fill</button>
-          <button type="button" class="btn small" data-tool="clear">Clear</button>
-        </div>
-        <div class="preview-row">
-          <span class="muted small">Preview</span>
-          <canvas id="paint-preview" width="16" height="16"></canvas>
-          <canvas id="paint-preview-big" width="32" height="32"></canvas>
-        </div>
+<dialog id="topic-dialog" class="modal">
+  <div class="modal-header">
+    <p class="modal-label">Channel settings</p>
+    <h3 class="modal-heading">Edit topic</h3>
+    <button class="modal-close" type="button" data-close aria-label="Close"><svg data-icon="close"></svg></button>
+  </div>
+  <form id="topic-form" class="modal-body form-stack">
+    <div class="cds--form-item">
+      <label class="cds--label" for="tp-topic">Topic</label>
+      <input id="tp-topic" class="cds--text-input" name="topic" maxlength="250">
+    </div>
+    <p class="form-error" data-error></p>
+  </form>
+  <div class="modal-footer">
+    <button class="cds--btn cds--btn--secondary" type="button" data-close>Cancel</button>
+    <button class="cds--btn cds--btn--primary" type="submit" form="topic-form">Save</button>
+  </div>
+</dialog>
+
+<dialog id="emoji-dialog" class="modal wide">
+  <div class="modal-header">
+    <p class="modal-label">Emoji studio</p>
+    <h3 class="modal-heading">Make your own emoji</h3>
+    <button class="modal-close" type="button" data-close aria-label="Close"><svg data-icon="close"></svg></button>
+  </div>
+  <div class="modal-body">
+    <div class="cds--tabs emoji-tabs">
+      <div class="cds--tab--list" role="tablist">
+        <button type="button" role="tab" class="cds--tabs__nav-item cds--tabs__nav-link cds--tabs__nav-item--selected" data-emoji-tab="draw">Draw</button>
+        <button type="button" role="tab" class="cds--tabs__nav-item cds--tabs__nav-link" data-emoji-tab="upload">Upload</button>
+        <button type="button" role="tab" class="cds--tabs__nav-item cds--tabs__nav-link" data-emoji-tab="gallery">All emoji</button>
       </div>
     </div>
-    <form id="draw-form" class="stack">
-      <label>Name <span class="name-field">:<input name="name" required maxlength="32" pattern="[A-Za-z0-9_\-]{2,32}" placeholder="party_cat">:</span></label>
-      <p class="error" data-error></p>
-      <button class="btn primary" type="submit">Save emoji</button>
-    </form>
-  </div>
 
-  <div data-emoji-panel="upload" hidden>
-    <form id="upload-emoji-form" class="stack">
-      <label>Image <span class="muted">PNG, GIF, JPG or WEBP · animated GIFs work</span>
-        <input name="image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" required>
-      </label>
-      <label>Name <span class="name-field">:<input name="name" required maxlength="32" pattern="[A-Za-z0-9_\-]{2,32}" placeholder="dancing_banana">:</span></label>
-      <p class="error" data-error></p>
-      <button class="btn primary" type="submit">Upload emoji</button>
-    </form>
-  </div>
+    <div data-emoji-panel="draw" class="studio">
+      <div class="paint">
+        <canvas id="paint-canvas" width="16" height="16" aria-label="16 by 16 pixel drawing grid"></canvas>
+        <div class="paint-side">
+          <div>
+            <p class="cds--label">Color</p>
+            <div id="palette" class="palette"></div>
+          </div>
+          <div>
+            <p class="cds--label">Tool</p>
+            <div class="tool-row">
+              <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-tool="pen">Pen<svg class="cds--btn__icon" data-icon="pen"></svg></button>
+              <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-tool="eraser">Eraser<svg class="cds--btn__icon" data-icon="erase"></svg></button>
+              <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-tool="fill">Fill<svg class="cds--btn__icon" data-icon="paint-brush"></svg></button>
+              <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-tool="clear">Clear<svg class="cds--btn__icon" data-icon="trash-can"></svg></button>
+            </div>
+          </div>
+          <div class="preview-row">
+            <p class="cds--label">Preview</p>
+            <canvas id="paint-preview" width="16" height="16"></canvas>
+            <canvas id="paint-preview-big" width="32" height="32"></canvas>
+          </div>
+        </div>
+      </div>
+      <form id="draw-form" class="emoji-form">
+        <div class="cds--form-item">
+          <label class="cds--label" for="draw-name">Emoji name</label>
+          <input id="draw-name" class="cds--text-input" name="name" required maxlength="32" pattern="[A-Za-z0-9_\-]{2,32}" placeholder="party_cat">
+          <div class="cds--form__helper-text">Use it in messages as :name:</div>
+        </div>
+        <button class="cds--btn cds--btn--primary" type="submit">Save emoji<svg class="cds--btn__icon" data-icon="checkmark"></svg></button>
+        <p class="form-error" data-error></p>
+      </form>
+    </div>
 
-  <div data-emoji-panel="gallery" hidden>
-    <div id="emoji-gallery" class="emoji-gallery"></div>
+    <div data-emoji-panel="upload" hidden>
+      <form id="upload-emoji-form" class="form-stack">
+        <div class="cds--form-item">
+          <label class="cds--label" for="up-image">Image</label>
+          <input id="up-image" class="file-field" name="image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" required>
+          <div class="cds--form__helper-text">PNG, GIF, JPG or WEBP, up to 512 KB. Animated GIFs work.</div>
+        </div>
+        <div class="cds--form-item">
+          <label class="cds--label" for="up-name">Emoji name</label>
+          <input id="up-name" class="cds--text-input" name="name" required maxlength="32" pattern="[A-Za-z0-9_\-]{2,32}" placeholder="dancing_banana">
+        </div>
+        <div><button class="cds--btn cds--btn--primary" type="submit">Upload emoji<svg class="cds--btn__icon" data-icon="upload"></svg></button></div>
+        <p class="form-error" data-error></p>
+      </form>
+    </div>
+
+    <div data-emoji-panel="gallery" hidden>
+      <div id="emoji-gallery" class="emoji-gallery"></div>
+    </div>
   </div>
 </dialog>
 
 <div id="emoji-picker" class="picker" hidden>
-  <input id="emoji-search" placeholder="Search emoji" aria-label="Search emoji">
+  <div class="cds--search" role="search">
+    <svg class="cds--search-magnifier-icon" data-icon="search"></svg>
+    <label class="visually-hidden" for="emoji-search">Search emoji</label>
+    <input id="emoji-search" class="cds--search-input" placeholder="Search emoji" autocomplete="off">
+  </div>
   <div id="emoji-grid" class="emoji-grid"></div>
-  <button type="button" class="btn small block" data-action="emoji-studio">＋ Make your own</button>
+  <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm make-own" data-action="emoji-studio">Make your own<svg class="cds--btn__icon" data-icon="add"></svg></button>
 </div>
 
-<div id="drop-overlay" class="drop-overlay" hidden><div>Drop to share</div></div>
-<div id="toast" class="toast" role="status" hidden></div>
+<div id="drop-overlay" class="drop-overlay" hidden><div><svg data-icon="upload"></svg>Drop to share</div></div>
+
+<div id="toast" class="cds--toast-notification cds--toast-notification--info toast" role="status" hidden>
+  <svg class="cds--toast-notification__icon" data-icon="information"></svg>
+  <div class="cds--toast-notification__details">
+    <div id="toast-text" class="cds--toast-notification__subtitle"></div>
+  </div>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/icons.js"></script>
 <script src="/js/emoji-data.js"></script>
 <script src="/js/app.js"></script>
 </body>

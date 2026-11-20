@@ -654,6 +654,16 @@ io.on('connection', (socket) => {
 });
 
 if (require.main === module) {
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n  Port ${PORT} is already in use, so talktalk can't start.`);
+      console.error('  talktalk is probably already running in another Terminal window.');
+      console.error('  Go to that window and press Control+C, or stop it from here with:\n');
+      console.error(`    lsof -ti :${PORT} | xargs kill\n`);
+      process.exit(1);
+    }
+    throw err;
+  });
   server.listen(PORT, () => {
     console.log(`\n  talktalk is up! Open http://localhost:${PORT} in your browser.\n`);
   });

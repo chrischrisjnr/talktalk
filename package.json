@@ -1,0 +1,36 @@
+{
+  "name": "talktalk",
+  "version": "1.0.0",
+  "description": "Free, open source team chat: channels, DMs, custom emoji and file sharing.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --watch --disable-warning=ExperimentalWarning server/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrischrisjnr/talktalk.git"
+  },
+  "keywords": [
+    "chat",
+    "slack-alternative",
+    "open-source",
+    "self-hosted"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrischrisjnr/talktalk/issues"
+  },
+  "homepage": "https://github.com/chrischrisjnr/talktalk#readme",
+  "dependencies": {
+    "@fontsource/aileron": "^5.3.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.22.3",
+    "multer": "^2.5.0",
+    "socket.io": "^4.8.4"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}
